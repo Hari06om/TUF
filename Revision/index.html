@@ -1,0 +1,55 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- //tailwind css -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <title>Document</title>
+</head>
+<body>
+    <div class="min-h-screen flex items-center justify-center bg-green-100 p-6">
+        <div class="bg-white rounded-lg shadow-lg p-8 max-w-md w-full">
+            <h1 class="text-2xl font-bold text-center mb-4">Age Counter</h1>
+            <p class="text-sm text-gray-600 text-center mb-6">Enter your birthdate to calculate your age.</p>
+
+            <div class="flex flex-col space-y-4">
+                <input id="birthdate" type="date" class="border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-300" />
+                <button id="calcBtn" class="bg-green-500 text-white rounded px-4 py-2 hover:bg-green-600">Calculate Age</button>
+                <div id="result" class="text-center text-lg font-medium text-gray-800">Your age will appear here.</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const birthInput = document.getElementById('birthdate');
+        const btn = document.getElementById('calcBtn');
+        const result = document.getElementById('result');
+
+        function calculateAge(dateString) {
+            if (!dateString) return null;
+            const today = new Date();
+            const dob = new Date(dateString);
+            let age = today.getFullYear() - dob.getFullYear();
+            const m = today.getMonth() - dob.getMonth();
+            if (m < 0 || (m === 0 && today.getDate() < dob.getDate())) {
+                age--;
+            }
+            return age;
+        }
+
+        btn.addEventListener('click', () => {
+            const dob = birthInput.value;
+            const age = calculateAge(dob);
+            if (age === null || isNaN(age)) {
+                result.textContent = 'Please select a valid date.';
+            } else if (age < 0) {
+                result.textContent = 'Birthdate is in the future.';
+            } else {
+                result.textContent = `Age: ${age} year${age !== 1 ? 's' : ''}`;
+            }
+        });
+    </script>
+</body>
+</html>
